@@ -63,7 +63,7 @@ class Invoice:
             'number': self.number,
             'date': self.date,
             'due_date': self.due_date,
-            'terms': 'Please pay by the due date.' # TODO add bank details to business config
+            'terms': f"Pay to: {business_info['payment_terms']}"
         }
 
         # Add details
