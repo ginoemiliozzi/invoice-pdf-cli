@@ -8,6 +8,7 @@ import utils
 from utils import get_valid_input_type, get_valid_input_string_date
 
 INVOICE_HISTORY_PATH = ".invoice-history.pkl"
+PDF_DIR = "invoice_pdfs"
 
 class InvoiceDetail:
     
@@ -74,7 +75,7 @@ class Invoice:
         return data
 
     
-    def generate_pdf(self, pdf_dir, api_key):
+    def generate_pdf(self, api_key):
         if not api_key:
             utils.warning("No API key provided - Cannot generate PDF for invoice")
             return
@@ -93,8 +94,8 @@ class Invoice:
                 )
             
             response.raise_for_status()
-            os.makedirs(pdf_dir, exist_ok=True)
-            pdf_file_path = f"{pdf_dir}/invoice_{self.number}.pdf"
+            os.makedirs(PDF_DIR, exist_ok=True)
+            pdf_file_path = f"{PDF_DIR}/invoice_{self.number}.pdf"
             with open(pdf_file_path, 'wb') as pdf_file:
                 pdf_file.write(response.content)
                 utils.success(f"PDF Invoice generated in {pdf_file_path}")
@@ -134,6 +135,11 @@ def show_detailed_invoice(number) -> None:
     if invoice:
         utils.title(f"Showing details for invoice #{number}")
         print(invoice.detailed_view())
+        pdf_document = f"{PDF_DIR}/invoice_{number}.pdf"
+        if os.path.exists(pdf_document):
+            show_pdf = utils.confirm_action("A PDF was found - do you want to show it?")
+            if show_pdf:
+                utils.show_pdf(pdf_document)
     else:
         utils.error(f"The invoice with number {number} was not found")
 
@@ -164,10 +170,18 @@ def create_invoice():
     
     # Generate PDF for invoice
     freeinv_api_key = ConfigProvider.load_config()['auth']['pdf_generator_api_key']
-    new_invoice.generate_pdf("invoice_pdfs", freeinv_api_key)
+    new_invoice.generate_pdf(freeinv_api_key)
 
+def regenerate_pdf(number):
+    invoice = find_invoice_by_number(number)
+    if invoice:
+        freeinv_api_key = ConfigProvider.load_config()['auth']['pdf_generator_api_key']
+        invoice.generate_pdf(freeinv_api_key)
+    else:
+        utils.error(f"The invoice with number {number} was not found")
 
 def cancel_invoice(number):
+    invoice_found = False
     new_invoices = [
         Invoice(
             invoice.number,
@@ -178,7 +192,7 @@ def cancel_invoice(number):
             invoice.date,
             invoice.due_date,
             "CANCELLED"
-        ) if invoice.number == number else invoice
+        ) if  (invoice.number == number and (invoice_found := True))else invoice
         for invoice in get_all_invoices()
     ]
 
@@ -186,4 +200,7 @@ def cancel_invoice(number):
         for inv in new_invoices:
             pickle.dump(inv, file)
 
-    utils.success(f"Invoice #{number} cancelled successfully")
+    if invoice_found:
+        utils.success(f"Invoice #{number} cancelled successfully")
+    else:
+        utils.warning(f"Invoice #{number} does not exist")

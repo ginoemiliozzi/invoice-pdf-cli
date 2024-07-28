@@ -27,8 +27,9 @@ class CliApp:
             MenuOption(key= "2", label= "New invoice", action=self._new_invoice),
             MenuOption(key= "3", label= "List invoices", action=self._list_invoices_by_status),
             MenuOption(key= "4", label= "View invoice details", action=self._view_invoice_details),
-            MenuOption(key= "5", label= "Cancel an invoice", action=self._cancel_invoice),
-            MenuOption(key= "6", label= "Exit", action=self._exit),
+            MenuOption(key= "5", label= "Regenerate PDF", action=self._regen_pdf),
+            MenuOption(key= "6", label= "Cancel an invoice", action=self._cancel_invoice),
+            MenuOption(key= "7", label= "Exit", action=self._exit),
         ] 
         self._action_runner: Dict[str, Callable[[], None]] = {option.key: option.action for option in self._options}
 
@@ -71,12 +72,16 @@ class CliApp:
         for key,value in statuses.items():
             print(f"{key} - {value}")
         status_choice = utils.get_valid_input_set(statuses.keys(), f"Enter status ({', '.join(statuses.keys())}): ")
-        invoice_manager.show_invoices_with_status(statuses[status_choice])
+        invoice_manager.show_invoices_with_status(statuses[status_choice.upper()])
 
     def _view_invoice_details(self):
         invoice_number = utils.get_valid_input_type(int, "Enter the invoice number: ")
         utils.clear_console()
         invoice_manager.show_detailed_invoice(invoice_number)
+
+    def _regen_pdf(self):
+        invoice_number = utils.get_valid_input_type(int, "Enter the invoice number: ")
+        invoice_manager.regenerate_pdf(invoice_number)
 
     def _cancel_invoice(self):
         utils.clear_console()

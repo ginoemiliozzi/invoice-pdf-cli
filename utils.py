@@ -2,6 +2,8 @@ import re
 import os
 import platform
 import colorama
+from pdf2image import convert_from_path
+import matplotlib.pyplot as plt
 
 def clear_console():
     if platform.system() == "Windows":
@@ -69,3 +71,12 @@ def get_valid_input_string_date(message):
             return input_value
         else:
             error(f"Invalid input. Please enter the date in the format DD/MM/YYYY")
+
+def show_pdf(pdf_path):
+    pages = convert_from_path(pdf_path)
+    first_page = pages[0]
+
+    plt.subplots(figsize=(10, 15))
+    plt.imshow(first_page)
+    plt.axis('off')
+    plt.show()
