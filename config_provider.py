@@ -20,10 +20,10 @@ class ConfigProvider:
 
     @classmethod
     def create_config(cls):
-        bz_name = get_valid_input_type(str, "[+] Enter the business name to be shown in the invoices:\n")
-        bz_address = get_valid_input_type(str, "[+] Enter the business address to be shown in the invoices:\n")
-        bz_tax_id = get_valid_input_type(str, "[+] Enter the tax id be shown in the invoices:\n")
-        bz_pay_to = get_valid_input_type(str, "[+] Enter the payment terms/receiving account for the invoice:\n")
+        bz_name = get_valid_input_type(str, "Your name to be shown in the invoices:\n")
+        bz_address = get_valid_input_type(str, "Your address to be shown in the invoices:\n")
+        bz_tax_id = get_valid_input_type(str, "Your tax id to be shown in the invoice:\n")
+        bz_pay_to = get_valid_input_type(str, "The receiving account for the invoice:\n")
         
         new_bz_config = {"name": bz_name, "address": bz_address, "tax_id": bz_tax_id, "payment_terms": bz_pay_to}
         

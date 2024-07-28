@@ -138,21 +138,21 @@ def show_detailed_invoice(number) -> None:
         utils.error(f"The invoice with number {number} was not found")
 
 def create_invoice():
-    client_name = get_valid_input_type(str, "[+] Enter the client business name:\n")
-    client_address = get_valid_input_type(str, "[+] Enter the client address:\n")
-    client_tax_id = get_valid_input_type(str, "[+] Enter the client tax id:\n")
+    client_name = get_valid_input_type(str, "Enter the client business name:\n")
+    client_address = get_valid_input_type(str, "Enter the client address:\n")
+    client_tax_id = get_valid_input_type(str, "Enter the client tax id:\n")
     details = []
     while True:
-        detail_row_desc = get_valid_input_type(str, "[+] Enter a description for the invoice detail row:\n")
-        detail_row_qty = get_valid_input_type(int, "[+] Enter the quantity for the invoice detail row:\n")
-        detail_row_unit_price = get_valid_input_type(float, "[+] Enter the unit price for the invoice detail row:\n")
+        detail_row_desc = get_valid_input_type(str, "Enter a description for the invoice detail row:\n")
+        detail_row_qty = get_valid_input_type(int, "Enter the quantity for the invoice detail row:\n")
+        detail_row_unit_price = get_valid_input_type(float, "Enter the unit price for the invoice detail row:\n")
         detail_row = InvoiceDetail(detail_row_desc, detail_row_qty, detail_row_unit_price)
         details.append(detail_row)
-        another_detail = get_valid_input_type(str, "[?] Do you want to enter another detail row? (Y/N)")
+        another_detail = get_valid_input_type(str, "Do you want to enter another detail row? (Y/N)")
         if another_detail.upper() != "Y":
             break
-    date = get_valid_input_string_date("[+] Enter the date for the invoice DD/MM/YYYY:\n")
-    due_date = get_valid_input_string_date("[+] Enter the due date for the invoice DD/MM/YYYY:\n")
+    date = get_valid_input_string_date("Enter the date for the invoice DD/MM/YYYY:\n")
+    due_date = get_valid_input_string_date("Enter the due date for the invoice DD/MM/YYYY:\n")
     invoice_number = get_next_invoice_number()
 
     new_invoice = Invoice(invoice_number, client_name, client_address, client_tax_id, details, date, due_date, "VALID")

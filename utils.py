@@ -1,7 +1,16 @@
 import re
+import os
+import platform
 import colorama
 
+def clear_console():
+    if platform.system() == "Windows":
+        os.system('cls')
+    else:
+        os.system('clear') 
+
 def invoice_greet():
+    clear_console()
     greet = colorama.Back.GREEN + """
 
 
@@ -9,10 +18,10 @@ def invoice_greet():
 / \/ \  /|/ \ |\/  _ \/ \/   _\/  __/  /  __/\  \//
 | || |\ ||| | //| / \|| ||  /  |  \    | |  _ \  / 
 | || | \||| \// | \_/|| ||  \_ |  /_   | |_// /  \ 
-\_/\_/  \|\__/  \____/\_/\____/\____\  \____\/__/\ \
+\_/\_/  \|\__/  \____/\_/\____/\____\  \____\/__/\\\\
                                                    
 """
-    print(greet)
+    print(greet)   
 
 def confirm_action(message):
     user_input = input(colorama.Back.MAGENTA + f"[?] {message} (Y/N): " + colorama.Style.RESET_ALL)
@@ -34,16 +43,23 @@ def title(message):
     print(colorama.Back.MAGENTA + f"\n[+] {message}\n")
 
 def user_input(message):
-    return input(colorama.Fore.LIGHTMAGENTA_EX + message + colorama.Style.RESET_ALL)
+    return input(colorama.Fore.LIGHTMAGENTA_EX +  f"[?] {message}" + colorama.Style.RESET_ALL)
 
-def get_valid_input_type(desired_type, message):
+def get_valid_input_type(target_type, message):
     while True:
         input_value = user_input(message)
         try:
-            return desired_type(input_value)
+            return target_type(input_value)
         except ValueError:
-            error(f"Invalid input. Please enter a value of type {desired_type.__name__}.")
+            error(f"Invalid input. Please enter a value of type {target_type.__name__}.")
 
+def get_valid_input_set(target_set, message):
+    while True:
+        input_value = user_input(message)
+        if input_value.upper() in target_set:
+            return input_value
+        else:
+            error(f"Invalid input. Please enter a value in {target_set}")
 
 def get_valid_input_string_date(message):
     date_pattern = re.compile(r"^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\d{4}$")
