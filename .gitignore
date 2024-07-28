@@ -1,0 +1,6 @@
+.config_invoice
+.invoice-history.pkl
+.env
+invoice_pdfs/
+
+__pycache__/
