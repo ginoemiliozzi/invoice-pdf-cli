@@ -19,7 +19,7 @@ class InvoiceDetail:
         self.row_price = self.qty * self.unit_price
 
     def __str__(self) -> str:
-        return f"{self.description} - Quantity: {self.qty} - Unit price: {self.unit_price} - Total: {self.row_price}"
+        return f"\n{self.description}\nQuantity: {self.qty}\nUnit price: {self.unit_price}\nTotal: {self.row_price}"
         
 class Invoice:
 
@@ -39,19 +39,18 @@ class Invoice:
     def minimal_view(self) -> str:
         return f"Invoice #{self.number} with total amount {self.total_price()} to client {self.client_name} on date {self.date}"
 
-    # TODO create util key value to show keys in bold
     def detailed_view(self) -> str:
         details_str = "\n".join(str(detail) for detail in self.details)
         return (
-            f"Invoice Number: {self.number}\n"
-            f"Client Name: {self.client_name}\n"
-            f"Client Address: {self.client_address}\n"
-            f"Client Tax ID: {self.client_tax_id}\n"
-            f"Details:\n{details_str}\n"
-            f"TOTAL: {self.total_price()}\n"
-            f"Date: {self.date}\n"
-            f"Due Date: {self.due_date}\n"
-            f"Status: {self.status}"
+            f"{utils.to_item_heading('Invoice Number', self.number)}\n"
+            f"{utils.to_item_heading('Client Name', self.client_name)}\n"
+            f"{utils.to_item_heading('Client Address', self.client_address)}\n"
+            f"{utils.to_item_heading('Client Tax ID', self.client_tax_id)}\n"
+            f"{utils.to_item_heading('Details', details_str)}\n"
+            f"{utils.to_item_heading('TOTAL', self.total_price())}\n"
+            f"{utils.to_item_heading('Date', self.date)}\n"
+            f"{utils.to_item_heading('Due Date', self.due_date)}\n"
+            f"{utils.to_item_heading('Status', self.status)}"
         )
     
     def to_api_data(self):

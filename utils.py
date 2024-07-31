@@ -44,6 +44,9 @@ def success(message):
 def title(message):
     print(colorama.Back.MAGENTA + f"\n[+] {message}\n")
 
+def to_item_heading(name, value) -> str:
+    return colorama.Back.LIGHTMAGENTA_EX + f"{name}:" + colorama.Style.RESET_ALL + f"{value}"
+
 def user_input(message):
     return input(colorama.Fore.LIGHTMAGENTA_EX +  f"[?] {message}" + colorama.Style.RESET_ALL)
 
