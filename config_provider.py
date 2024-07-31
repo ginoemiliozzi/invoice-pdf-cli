@@ -24,8 +24,15 @@ class ConfigProvider:
         bz_address = get_valid_input_type(str, "Your address to be shown in the invoices:\n")
         bz_tax_id = get_valid_input_type(str, "Your tax id to be shown in the invoice:\n")
         bz_pay_to = get_valid_input_type(str, "The receiving account for the invoice:\n")
+        bz_currency = get_valid_input_type(str, "The preferred currency for the invoices:\n")
         
-        new_bz_config = {"name": bz_name, "address": bz_address, "tax_id": bz_tax_id, "payment_terms": bz_pay_to}
+        new_bz_config = {
+            "name": bz_name,
+            "address": bz_address,
+            "tax_id": bz_tax_id,
+            "payment_terms": bz_pay_to,
+            "currency": bz_currency
+        }
         
         auth_pdf_api_key = os.getenv("FREE_INVOICE_API_KEY")
         new_auth_config = {"pdf_generator_api_key": auth_pdf_api_key}

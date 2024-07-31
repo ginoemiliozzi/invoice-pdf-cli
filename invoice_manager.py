@@ -63,6 +63,7 @@ class Invoice:
             'number': self.number,
             'date': self.date,
             'due_date': self.due_date,
+            'currency': business_info['currency'],
             'terms': f"Pay to: {business_info['payment_terms']}"
         }
 
