@@ -1,6 +1,6 @@
 import configparser
 import os
-from utils import get_valid_input_type, success, error
+from utils import get_valid_input_set, get_valid_input_type, success, error
 
 class ConfigProvider:
     CONFIG_PATH = ".config_invoice"
@@ -24,7 +24,8 @@ class ConfigProvider:
         bz_address = get_valid_input_type(str, "Your address to be shown in the invoices:\n")
         bz_tax_id = get_valid_input_type(str, "Your tax id to be shown in the invoice:\n")
         bz_pay_to = get_valid_input_type(str, "The receiving account for the invoice:\n")
-        bz_currency = get_valid_input_type(str, "The preferred currency for the invoices:\n")
+        currency_codes = ["USD", "EUR", "JPY", "GBP", "AUD", "CAD", "CHF", "CNY", "HKD", "NZD"]
+        bz_currency = get_valid_input_set(currency_codes, "The preferred currency for the invoices:\n")
         
         new_bz_config = {
             "name": bz_name,
