@@ -8,7 +8,7 @@ import clients_manager
 from utils import get_valid_input_type, get_valid_input_string_date
 
 INVOICE_HISTORY_PATH = ".invoice-history.pkl"
-PDF_DIR = "invoice_pdfs"
+PDF_DIR = "invoice-pdfs"
 
 def get_next_invoice_number() -> int:
     max_existing_number = max(
