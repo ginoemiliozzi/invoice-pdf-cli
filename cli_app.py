@@ -63,7 +63,6 @@ class CliApp:
             invoice_manager.create_invoice()
         else:
             utils.error("You need to configure your business info before creating any invoices")
-
     
     def _list_invoices_by_status(self):
         utils.clear_console()

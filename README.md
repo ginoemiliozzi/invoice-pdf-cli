@@ -6,12 +6,11 @@ Simple CLI to manage invoices and generate PDFs using the free [Invoice Generato
 
 - Configure your business information
 - Create new invoices
+- Re-use client details
 - List invoices by status
 - View invoice details
 - Cancel an invoice
 - Generate PDF invoices
-
-![Example image](https://github.com/user-attachments/assets/103eb7b1-3995-4703-921c-d1edeafe3d39)
 
 ## Requirements
 
