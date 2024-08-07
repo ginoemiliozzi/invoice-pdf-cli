@@ -4,6 +4,7 @@ import platform
 import colorama
 from pdf2image import convert_from_path
 import matplotlib.pyplot as plt
+import requests
 
 def clear_console():
     if platform.system() == "Windows":
@@ -49,6 +50,24 @@ def to_item_heading(name, value) -> str:
 
 def user_input(message):
     return input(colorama.Fore.LIGHTMAGENTA_EX +  f"[?] {message}" + colorama.Style.RESET_ALL)
+
+def is_url_image(image_url: str):
+    try:
+        image_formats = ("image/png", "image/jpeg", "image/jpg")
+        r = requests.head(image_url)
+        is_valid_image = r.headers["content-type"] in image_formats
+        return is_valid_image
+    except Exception:
+        return False
+    
+def get_valid_image_url(message):
+    url = get_valid_input_type(str, message)
+    if is_url_image(url):
+        return url
+    else:
+        info('Your logo is not a valid image URL. A default logo will be set')
+        default_logo = 'https://avatars.githubusercontent.com/u/22394483?v=4'
+        return default_logo
 
 def get_valid_input_type(target_type, message):
     while True:

@@ -1,6 +1,6 @@
 import configparser
 import os
-from utils import get_valid_input_set, get_valid_input_type, success, error
+from utils import get_valid_image_url, get_valid_input_set, get_valid_input_type, success, error
 
 class ConfigProvider:
     CONFIG_PATH = ".config_invoice"
@@ -21,6 +21,7 @@ class ConfigProvider:
     @classmethod
     def create_config(cls):
         bz_name = get_valid_input_type(str, "Your name to be shown in the invoices:\n")
+        bz_logo = get_valid_image_url("Your logo to be shown in the invoices (image URL):\n")
         bz_address = get_valid_input_type(str, "Your address to be shown in the invoices:\n")
         bz_tax_id = get_valid_input_type(str, "Your tax id to be shown in the invoice:\n")
         bz_pay_to = get_valid_input_type(str, "The receiving account for the invoice:\n")
@@ -29,6 +30,7 @@ class ConfigProvider:
         
         new_bz_config = {
             "name": bz_name,
+            "logo": bz_logo,
             "address": bz_address,
             "tax_id": bz_tax_id,
             "payment_terms": bz_pay_to,

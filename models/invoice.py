@@ -39,7 +39,7 @@ class Invoice:
         data = {
             'from': f"{business_info['name']}\n{business_info['address']}\n{business_info['tax_id']}",
             'to': f"{self.invoice_client.invoice_formatted()}",
-            'logo': 'https://avatars.githubusercontent.com/u/22394483?v=4',  # TODO make it configurable
+            'logo': business_info['logo'],
             'number': self.number,
             'date': self.date,
             'due_date': self.due_date,
