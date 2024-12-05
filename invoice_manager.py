@@ -94,17 +94,12 @@ def regenerate_pdf(number):
     else:
         utils.error(f"The invoice with number {number} was not found")
 
-def cancel_invoice(number):
+def _affect_invoice(number, operation):
     invoice_found = False
     new_invoices = [
-        Invoice(
-            invoice.number,
-            invoice.invoice_client,
-            invoice.details,
-            invoice.date,
-            invoice.due_date,
-            "CANCELLED"
-        ) if  (invoice.number == number and (invoice_found := True))else invoice
+        Invoice(**{**invoice.__dict__, **operation}) 
+        if  (invoice.number == number and (invoice_found := True))
+        else invoice
         for invoice in get_all_invoices()
     ]
 
@@ -113,6 +108,12 @@ def cancel_invoice(number):
             pickle.dump(inv, file)
 
     if invoice_found:
-        utils.success(f"Invoice #{number} cancelled successfully")
+        utils.success(f"Invoice #{number} affected successfully")
     else:
         utils.warning(f"Invoice #{number} does not exist")
+
+def cancel_invoice(number):
+    _affect_invoice(number, {"status": "CANCELLED"})
+
+def mark_invoice_as_registered(number):
+    _affect_invoice(number, {"tax_registered": True})

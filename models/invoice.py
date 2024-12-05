@@ -8,19 +8,26 @@ from .client import Client
 
 class Invoice:
 
-    def __init__(self, number, invoice_client: Client, details: List[InvoiceDetail], date, due_date, status):
+    def __init__(self, number, invoice_client: Client, details: List[InvoiceDetail], date, due_date, status, tax_registered = False):
         self.number = number
         self.invoice_client = invoice_client
         self.details = details
         self.date = date
         self.due_date = due_date
         self.status = status
+        self.tax_registered = tax_registered
+    
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+
+        if 'tax_registered' not in self.__dict__:
+            self.tax_registered = False
 
     def total_price(self) -> float:
         return sum(row.row_price for row in self.details)
     
     def minimal_view(self) -> str:
-        return f"Invoice #{self.number} with total amount {self.total_price()} to client {self.invoice_client.name} on date {self.date}"
+        return f"Invoice #{self.number} with total amount {self.total_price()} to client {self.invoice_client.name} on date {self.date} - Tax registered: {self.tax_registered}"
 
     def detailed_view(self) -> str:
         details_str = "\n".join(str(detail) for detail in self.details)
@@ -31,6 +38,7 @@ class Invoice:
             f"{utils.to_item_heading('TOTAL', self.total_price())}\n"
             f"{utils.to_item_heading('Date', self.date)}\n"
             f"{utils.to_item_heading('Due Date', self.due_date)}\n"
+            f"{utils.to_item_heading('Tax registered', self.tax_registered)}\n"
             f"{utils.to_item_heading('Status', self.status)}"
         )
     
