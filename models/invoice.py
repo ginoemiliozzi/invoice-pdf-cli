@@ -1,5 +1,6 @@
 import utils
 import requests
+import colorama
 from typing import List
 from config_provider import ConfigProvider
 import os
@@ -27,7 +28,13 @@ class Invoice:
         return sum(row.row_price for row in self.details)
     
     def minimal_view(self) -> str:
-        return f"Invoice #{self.number} with total amount {self.total_price()} to client {self.invoice_client.name} on date {self.date} - Tax registered: {self.tax_registered}"
+        def format_tax_registered(is_registered: bool) -> str:
+            if is_registered:
+                return f"{colorama.Back.GREEN} {colorama.Style.RESET_ALL}"
+            else:
+                return f"{colorama.Back.RED} {colorama.Style.RESET_ALL}"
+
+        return f"Invoice {colorama.Back.CYAN}#{self.number}{colorama.Style.RESET_ALL} with total amount {self.total_price()} to client {self.invoice_client.name} on date {self.date} - Tax registered {format_tax_registered(self.tax_registered)}"
 
     def detailed_view(self) -> str:
         details_str = "\n".join(str(detail) for detail in self.details)
